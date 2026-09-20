@@ -230,6 +230,99 @@ body::before{
   text-align:center;font-size:0.65rem;letter-spacing:2px;
   color:rgba(255,255,255,0.3);text-transform:uppercase;margin-bottom:4px;
 }
+
+/* ── VOICE NOTES ── */
+.voice-section{
+  background:rgba(0,0,0,0.3);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:20px;padding:16px 14px;
+  margin:16px 0;display:flex;flex-direction:column;gap:12px;
+}
+.voice-label{
+  text-align:center;font-size:0.65rem;letter-spacing:2px;
+  color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:2px;
+}
+.voice-card{
+  display:flex;align-items:center;gap:10px;
+}
+.voice-card.me{ flex-direction:row-reverse; }
+.voice-avatar{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(192,132,252,0.6),rgba(255,45,110,0.6));
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.8rem;font-weight:700;color:#fff;
+  border:1px solid rgba(255,255,255,0.15);
+}
+.voice-avatar.me-av{
+  background:linear-gradient(135deg,rgba(255,45,110,0.6),rgba(255,215,0,0.5));
+}
+.voice-body{
+  flex:1;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;padding:10px 12px;
+}
+.voice-card.me .voice-body{
+  background:linear-gradient(135deg,rgba(255,45,110,0.2),rgba(192,132,252,0.2));
+  border-color:rgba(255,45,110,0.2);
+}
+.voice-top{
+  display:flex;align-items:center;gap:10px;
+}
+.voice-play-btn{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--rose),var(--purple));
+  border:none;color:#fff;font-size:0.9rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 12px rgba(255,45,110,0.5);
+  transition:transform 0.15s;
+}
+.voice-play-btn:active{transform:scale(0.9)}
+.voice-wave{
+  flex:1;display:flex;align-items:center;gap:3px;height:28px;
+}
+.voice-wave span{
+  display:block;width:3px;border-radius:3px;
+  background:rgba(255,255,255,0.3);
+  animation:wave-idle 1.2s ease-in-out infinite;
+}
+.voice-wave span:nth-child(1){height:6px;animation-delay:0s}
+.voice-wave span:nth-child(2){height:14px;animation-delay:0.1s}
+.voice-wave span:nth-child(3){height:10px;animation-delay:0.2s}
+.voice-wave span:nth-child(4){height:20px;animation-delay:0.3s}
+.voice-wave span:nth-child(5){height:8px;animation-delay:0.4s}
+.voice-wave span:nth-child(6){height:16px;animation-delay:0.5s}
+.voice-wave span:nth-child(7){height:12px;animation-delay:0.6s}
+.voice-wave span:nth-child(8){height:22px;animation-delay:0.7s}
+.voice-wave span:nth-child(9){height:10px;animation-delay:0.8s}
+.voice-wave span:nth-child(10){height:6px;animation-delay:0.9s}
+@keyframes wave-idle{
+  0%,100%{transform:scaleY(1);opacity:0.3}
+  50%{transform:scaleY(1.5);opacity:0.6}
+}
+.voice-wave.playing span{
+  background:var(--rose);
+  animation:wave-play 0.6s ease-in-out infinite;
+}
+.voice-card.me .voice-wave.playing span{ background:var(--gold); }
+@keyframes wave-play{
+  0%,100%{transform:scaleY(0.4);opacity:0.6}
+  50%{transform:scaleY(1.6);opacity:1}
+}
+.voice-wave.playing span:nth-child(1){animation-delay:0s}
+.voice-wave.playing span:nth-child(2){animation-delay:0.08s}
+.voice-wave.playing span:nth-child(3){animation-delay:0.16s}
+.voice-wave.playing span:nth-child(4){animation-delay:0.24s}
+.voice-wave.playing span:nth-child(5){animation-delay:0.32s}
+.voice-wave.playing span:nth-child(6){animation-delay:0.08s}
+.voice-wave.playing span:nth-child(7){animation-delay:0.16s}
+.voice-wave.playing span:nth-child(8){animation-delay:0.24s}
+.voice-wave.playing span:nth-child(9){animation-delay:0.12s}
+.voice-wave.playing span:nth-child(10){animation-delay:0.04s}
+.voice-dur{
+  font-size:0.7rem;color:rgba(255,255,255,0.45);
+  white-space:nowrap;min-width:28px;text-align:right;
+}
 .bub{max-width:78%;padding:10px 14px;border-radius:18px;font-size:0.88rem;line-height:1.5}
 .bub-label{font-size:0.62rem;opacity:0.5;margin-bottom:3px;text-transform:uppercase;letter-spacing:1px}
 .bub.them{
@@ -534,9 +627,43 @@ footer b{color:var(--rose)}
       <div class="bub them"><div class="bub-label">You</div> .</div>
       <div class="bub me"><div class="bub-label">Me</div> Hi</div>
       <div class="bub them"><div class="bub-label">You</div> Your name?</div>
-      <div class="bub me"><div class="bub-label">Me</div> Athaan mela potrukula </div>
+      <div class="bub me"><div class="bub-label">Me</div> Athaan mela potrukula &#128514;</div>
     </div>
-    <p>Our first conversation&#8230; &#128514;&#128514;&#128514;</p>
+
+    <!-- VOICE NOTES SECTION -->
+    <div class="voice-section">
+      <div class="voice-label">&#127908; Our first voice records</div>
+
+      <div class="voice-card them">
+        <div class="voice-body">
+          <div class="voice-top">
+            <button class="voice-play-btn" onclick="toggleAudio(this,'1.opus')">&#9654;</button>
+            <div class="voice-wave">
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <span class="voice-dur" id="dur-1">0:00</span>
+          </div>
+          <audio id="audio-1" src="1.opus" preload="metadata"></audio>
+        </div>
+      </div>
+
+      <div class="voice-card me">
+        <div class="voice-body">
+          <div class="voice-top">
+            <button class="voice-play-btn" onclick="toggleAudio(this,'2.opus')">&#9654;</button>
+            <div class="voice-wave">
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <span class="voice-dur" id="dur-2">0:00</span>
+          </div>
+          <audio id="audio-2" src="2.opus" preload="metadata"></audio>
+        </div>
+      </div>
+    </div>
+
+    <p>Our first conversation&#8230; hahaha :))))))</p>
     <p>It feels so simple when I look back at it, but I never imagined that those few little words would become the beginning of something so important to me.</p>
     <p>I can&#39;t forget even a single thing about you.</p>
     <p>I&#39;ve never met or known a person like you before. <span class="rs">You are truly one of a kind to me.</span></p>
@@ -546,6 +673,19 @@ footer b{color:var(--rose)}
     <p>You will always be my little child, my special person, and someone I want to have by my side forever.</p>
     <p>No matter how much time passes, I&#39;ll always cherish those seven months, our first conversation, every call, every little moment, and everything we&#39;ve shared.</p>
     <div class="sign-off">I love you, Saranya. Always. &#10084;&#65039;</div>
+  </div>
+</section>
+
+<!-- ══ BLUE HEART MOMENT ══ -->
+<div class="sec-divider reveal"><span class="sec-divider-icon">&#128153;</span></div>
+<section class="letter-section reveal" style="padding-bottom: 30px;">
+  <div class="letter-card" style="text-align: center; padding: 20px;">
+    <div style="border-radius: 20px; overflow: hidden; border: 1.5px solid rgba(255,45,110,0.3); box-shadow: 0 8px 30px rgba(0,0,0,0.6); margin-bottom: 16px;">
+      <img src="blueheart.jpeg" alt="First Blue Heart" style="width: 100%; display: block;">
+    </div>
+    <p style="color: rgba(255,255,255,0.85); font-size: 0.95rem; line-height: 1.7; margin-bottom: 0;">
+      This is where the first <span style="color: #60a5fa; font-weight: 600; text-shadow: 0 0 10px rgba(96,165,250,0.5);">blue heart</span> initiated from me &#128153;
+    </p>
   </div>
 </section>
 
@@ -637,6 +777,66 @@ footer b{color:var(--rose)}
 </div><!-- /page -->
 
 <script>
+/* ── VOICE NOTES ── */
+var currentAudio = null;
+var currentBtn = null;
+var currentWave = null;
+var currentTimer = null;
+
+function formatTime(s) {
+  var m = Math.floor(s / 60);
+  var s = Math.floor(s % 60);
+  return m + ":" + (s < 10 ? "0" : "") + s;
+}
+
+function toggleAudio(btn, src) {
+  var top = btn.parentElement;
+  var wave = top.querySelector('.voice-wave');
+  var durSpan = top.querySelector('.voice-dur');
+  var audio = top.nextElementSibling;
+  
+  if(currentAudio && currentAudio !== audio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentBtn.innerHTML = '&#9654;';
+    currentWave.classList.remove('playing');
+    clearInterval(currentTimer);
+  }
+  
+  if(audio.paused) {
+    audio.play();
+    btn.innerHTML = '&#9646;&#9646;';
+    wave.classList.add('playing');
+    currentAudio = audio;
+    currentBtn = btn;
+    currentWave = wave;
+    
+    currentTimer = setInterval(function() {
+      if(!audio.paused) durSpan.textContent = formatTime(audio.currentTime);
+    }, 100);
+    
+    audio.onended = function() {
+      btn.innerHTML = '&#9654;';
+      wave.classList.remove('playing');
+      clearInterval(currentTimer);
+      durSpan.textContent = formatTime(audio.duration);
+    };
+  } else {
+    audio.pause();
+    btn.innerHTML = '&#9654;';
+    wave.classList.remove('playing');
+    clearInterval(currentTimer);
+  }
+}
+
+// init duration when loaded
+document.querySelectorAll('audio').forEach(function(a) {
+  a.onloadedmetadata = function() {
+    var dur = a.previousElementSibling.querySelector('.voice-dur');
+    dur.textContent = formatTime(a.duration);
+  };
+});
+
 /* ── STARS ── */
 (function(){
   var wrap=document.getElementById('stars');
