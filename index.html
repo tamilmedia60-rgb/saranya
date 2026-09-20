@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -318,31 +318,114 @@ body::before{
 }
 .wish-card p{font-size:0.9rem;color:rgba(255,255,255,0.75);line-height:1.8}
 
-/* ══════════ LIGHTBOX ══════════ */
+/* ══════════ SLIDESHOW LIGHTBOX ══════════ */
 .lightbox{
   display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,0.95);
+  background:rgba(0,0,0,0.96);
   z-index:1000;align-items:center;justify-content:center;flex-direction:column;
-  backdrop-filter:blur(10px);
+  backdrop-filter:blur(16px);
 }
 .lightbox.on{display:flex}
-.lightbox img{
-  max-width:96vw;max-height:84vh;border-radius:16px;
-  border:1.5px solid rgba(255,45,110,0.4);
-  box-shadow:0 0 80px rgba(255,45,110,0.3);
-  animation:lb-in 0.3s ease;
+
+/* progress bar */
+.lb-progress{
+  position:absolute;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--rose),var(--gold));
+  border-radius:0 2px 2px 0;
+  transition:width 0.1s linear;
+  box-shadow:0 0 8px rgba(255,45,110,0.8);
 }
-@keyframes lb-in{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+
+/* image wrapper */
+.lb-img-wrap{
+  width:96vw;max-height:76vh;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.lb-img-wrap img{
+  max-width:100%;max-height:76vh;
+  border-radius:18px;
+  border:2px solid rgba(255,45,110,0.35);
+  box-shadow:0 0 60px rgba(255,45,110,0.35),0 20px 60px rgba(0,0,0,0.8);
+  object-fit:contain;
+  transition:opacity 0.35s ease,transform 0.35s ease;
+}
+.lb-img-wrap img.fade-out{opacity:0;transform:scale(0.94)}
+.lb-img-wrap img.fade-in{opacity:1;transform:scale(1)}
+
+/* counter */
+.lb-counter{
+  position:absolute;top:20px;left:20px;
+  background:rgba(0,0,0,0.5);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:100px;padding:5px 14px;
+  font-size:0.75rem;letter-spacing:1px;
+  color:rgba(255,255,255,0.7);
+  backdrop-filter:blur(6px);
+}
+
+/* close */
 .lb-close{
-  position:absolute;top:20px;right:20px;
-  width:46px;height:46px;border-radius:50%;
-  background:rgba(255,45,110,0.3);
-  border:1px solid rgba(255,45,110,0.5);
-  color:#fff;font-size:1.3rem;cursor:pointer;
+  position:absolute;top:16px;right:16px;
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,45,110,0.25);
+  border:1px solid rgba(255,45,110,0.4);
+  color:#fff;font-size:1.2rem;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   backdrop-filter:blur(6px);transition:background 0.2s;
+  z-index:10;
 }
-.lb-close:active{background:rgba(255,45,110,0.6)}
+.lb-close:active{background:rgba(255,45,110,0.7)}
+
+/* nav arrows */
+.lb-nav{
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  margin-top:18px;
+}
+.lb-btn{
+  width:50px;height:50px;border-radius:50%;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.15);
+  color:#fff;font-size:1.4rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s,transform 0.15s;
+  backdrop-filter:blur(4px);
+}
+.lb-btn:active{background:rgba(255,45,110,0.4);transform:scale(0.92)}
+
+/* play/pause */
+.lb-play{
+  width:54px;height:54px;border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),var(--purple));
+  border:none;color:#fff;font-size:1.3rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 20px rgba(255,45,110,0.5);
+  transition:transform 0.15s;
+}
+.lb-play:active{transform:scale(0.92)}
+
+/* dots */
+.lb-dots{
+  display:flex;gap:7px;align-items:center;
+  margin-top:14px;
+}
+.lb-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,0.25);
+  transition:all 0.3s ease;cursor:pointer;
+}
+.lb-dot.active{
+  width:22px;border-radius:4px;
+  background:linear-gradient(90deg,var(--rose),var(--gold));
+  box-shadow:0 0 8px rgba(255,45,110,0.6);
+}
+
+/* swipe hint */
+.lb-hint{
+  position:absolute;bottom:14px;
+  font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,0.2);
+}
 
 /* ══════════ FOOTER ══════════ */
 footer{
@@ -365,10 +448,21 @@ footer b{color:var(--rose)}
 <canvas id="confetti-canvas"></canvas>
 <div id="hearts"></div>
 
-<!-- lightbox -->
+<!-- slideshow lightbox -->
 <div class="lightbox" id="lb">
+  <div class="lb-progress" id="lb-progress"></div>
+  <div class="lb-counter" id="lb-counter">1 / 6</div>
   <button class="lb-close" onclick="closeLB()">&#x2715;</button>
-  <img id="lb-img" src="" alt="Saranya"/>
+  <div class="lb-img-wrap">
+    <img id="lb-img" src="" alt="Saranya"/>
+  </div>
+  <div class="lb-nav">
+    <button class="lb-btn" onclick="slideTo(curIdx-1)">&#8592;</button>
+    <button class="lb-play" id="lb-play-btn" onclick="togglePlay()">&#9646;&#9646;</button>
+    <button class="lb-btn" onclick="slideTo(curIdx+1)">&#8594;</button>
+  </div>
+  <div class="lb-dots" id="lb-dots"></div>
+  <div class="lb-hint">swipe or tap arrows</div>
 </div>
 
 <div class="page">
@@ -424,6 +518,7 @@ footer b{color:var(--rose)}
 <div class="sec-divider reveal"><span class="sec-divider-icon">&#128248;</span></div>
 <section class="gallery-section reveal">
   <h2 class="sec-title"><span>Our Moments</span></h2>
+  <p style="text-align:center;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:18px;margin-top:-14px;">&#128248; tap any photo to slideshow</p>
   <div class="gallery-grid">
 
     <div class="full">
@@ -540,13 +635,131 @@ footer b{color:var(--rose)}
   setInterval(spawn,700);
 })();
 
-/* ── LIGHTBOX ── */
-function openLB(f){
-  document.getElementById('lb-img').src=f.querySelector('img').src;
-  document.getElementById('lb').classList.add('on');
+/* ── SLIDESHOW LIGHTBOX ── */
+var imgs = ['1.jpeg','2.jpeg','3.jpeg','4.jpeg','5.jpeg','6.jpeg'];
+var curIdx = 0;
+var playing = true;
+var slideTimer = null;
+var progressTimer = null;
+var progressVal = 0;
+var SLIDE_DUR = 3500; // ms per slide
+
+// build dots
+(function(){
+  var dotsWrap = document.getElementById('lb-dots');
+  imgs.forEach(function(_,i){
+    var d = document.createElement('div');
+    d.className = 'lb-dot' + (i===0?' active':'');
+    d.onclick = function(){ slideTo(i); };
+    dotsWrap.appendChild(d);
+  });
+})();
+
+function updateDots(){
+  var dots = document.querySelectorAll('.lb-dot');
+  dots.forEach(function(d,i){ d.className = 'lb-dot'+(i===curIdx?' active':''); });
 }
-function closeLB(){document.getElementById('lb').classList.remove('on')}
-document.getElementById('lb').addEventListener('click',function(e){if(e.target===this)closeLB()});
+
+function updateCounter(){
+  document.getElementById('lb-counter').textContent = (curIdx+1)+' / '+imgs.length;
+}
+
+function setProgress(pct){
+  document.getElementById('lb-progress').style.width = pct+'%';
+}
+
+function slideTo(idx, instant){
+  idx = ((idx % imgs.length) + imgs.length) % imgs.length;
+  var imgEl = document.getElementById('lb-img');
+  imgEl.classList.add('fade-out');
+  setTimeout(function(){
+    curIdx = idx;
+    imgEl.src = imgs[curIdx];
+    imgEl.classList.remove('fade-out');
+    updateDots();
+    updateCounter();
+  }, 320);
+  if(playing) restartAutoplay();
+}
+
+function startProgress(){
+  progressVal = 0;
+  setProgress(0);
+  clearInterval(progressTimer);
+  progressTimer = setInterval(function(){
+    progressVal += 100 / (SLIDE_DUR / 80);
+    if(progressVal >= 100) progressVal = 100;
+    setProgress(progressVal);
+  }, 80);
+}
+
+function restartAutoplay(){
+  clearTimeout(slideTimer);
+  clearInterval(progressTimer);
+  startProgress();
+  slideTimer = setTimeout(function(){
+    slideTo(curIdx + 1);
+  }, SLIDE_DUR);
+}
+
+function togglePlay(){
+  playing = !playing;
+  var btn = document.getElementById('lb-play-btn');
+  if(playing){
+    btn.innerHTML = '&#9646;&#9646;';
+    restartAutoplay();
+  } else {
+    btn.innerHTML = '&#9654;';
+    clearTimeout(slideTimer);
+    clearInterval(progressTimer);
+    setProgress(0);
+  }
+}
+
+function openLB(f){
+  var src = f.querySelector('img').src;
+  var fname = src.split('/').pop();
+  curIdx = imgs.indexOf(fname);
+  if(curIdx < 0) curIdx = 0;
+  document.getElementById('lb-img').src = imgs[curIdx];
+  updateDots();
+  updateCounter();
+  document.getElementById('lb').classList.add('on');
+  playing = true;
+  document.getElementById('lb-play-btn').innerHTML = '&#9646;&#9646;';
+  restartAutoplay();
+}
+
+function closeLB(){
+  document.getElementById('lb').classList.remove('on');
+  clearTimeout(slideTimer);
+  clearInterval(progressTimer);
+  setProgress(0);
+}
+
+// tap background to close
+document.getElementById('lb').addEventListener('click', function(e){
+  if(e.target === this) closeLB();
+});
+
+// keyboard nav
+document.addEventListener('keydown', function(e){
+  if(!document.getElementById('lb').classList.contains('on')) return;
+  if(e.key === 'ArrowLeft') slideTo(curIdx-1);
+  if(e.key === 'ArrowRight') slideTo(curIdx+1);
+  if(e.key === 'Escape') closeLB();
+});
+
+// touch swipe
+(function(){
+  var el = document.getElementById('lb');
+  var startX = 0;
+  el.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; }, {passive:true});
+  el.addEventListener('touchend', function(e){
+    var diff = startX - e.changedTouches[0].clientX;
+    if(Math.abs(diff) > 50){ diff > 0 ? slideTo(curIdx+1) : slideTo(curIdx-1); }
+  }, {passive:true});
+})();
 
 /* ── SCROLL REVEAL ── */
 (function(){
